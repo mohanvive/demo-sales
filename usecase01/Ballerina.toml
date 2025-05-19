@@ -8,6 +8,3 @@ groupId = "mysql"
 artifactId = "mysql-connector-java"
 version = "8.0.17"
 
-[[platform.java11.dependency]]
-path="/Users/mohan/demos/healthfirst/mysql-jar/mysql-connector-java-8.0.17.jar"
-

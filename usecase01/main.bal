@@ -31,7 +31,7 @@ service /api on new http:Listener(8085) {
         return customers;
     }
 
-    resource function post customers(@http:Payload CustomerInsert customer) returns Customer|error {
+    resource function post customer/create(@http:Payload CustomerInsert customer) returns Customer|error {
         sql:ExecutionResult result = check dbClient->execute(`
             INSERT INTO customers (first_name, last_name, email, phone_number, address)
             VALUES (${customer.firstName}, ${customer.lastName}, ${customer.email}, 

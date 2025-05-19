@@ -1,5 +1,5 @@
-configurable string dbHost = "localhost";
-configurable string dbUser = "root";
-configurable string dbPassword = "12345678";
-configurable string dbName = "healthcare";
-configurable int dbPort = 3306;
+configurable string dbHost = "?";
+configurable string dbUser = "?";
+configurable string dbPassword = "?";
+configurable string dbName = "?";
+configurable int dbPort = ?;
