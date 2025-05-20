@@ -16,11 +16,11 @@ service /api on new http:Listener(8085) {
         stream<CustomerDB, error?> resultStream;
         if id is () {
             resultStream = dbClient->query(
-            `SELECT id, first_name, last_name, email, address FROM customers`
+            `SELECT id, first_name, last_name, email, phone_number, address FROM customers`
             );
         } else {
             resultStream = dbClient->query(
-            `SELECT id, first_name, last_name, email, address FROM customers WHERE id = ${id}`
+            `SELECT id, first_name, last_name, email, phone_number, address FROM customers WHERE id = ${id}`
             );
         }
         check from CustomerDB customer in resultStream
@@ -47,14 +47,20 @@ service /api on new http:Listener(8085) {
             return error("Invalid email format");
         }
 
+        // Validate phoneNumber
+        if !isValidPhoneNumber(customer.phoneNumber) {
+            return error("Invalid phone number format");
+        }
+
         // Validate address
         if customer.address.trim().length() == 0 {
             return error("Address cannot be empty");
         }
 
         sql:ExecutionResult result = check dbClient->execute(`
-            INSERT INTO customers (first_name, last_name, email, address)
-            VALUES (${customer.firstName}, ${customer.lastName}, ${customer.email}, ${customer.address})
+            INSERT INTO customers (first_name, last_name, email, phone_number, address)
+            VALUES (${customer.firstName}, ${customer.lastName}, ${customer.email}, 
+                    ${customer.phoneNumber}, ${customer.address})
         `);
 
         int|string? lastInsertId = result.lastInsertId;
@@ -94,4 +100,34 @@ function isValidEmail(string email) returns boolean {
     }
 
     return true;
+}
+
+// Helper function to validate phone number format
+function isValidPhoneNumber(string phoneNumber) returns boolean {
+    if phoneNumber.trim().length() == 0 {
+        return false;
+    }
+
+    // Basic phone number validation (allows +, digits, and optional spaces)
+    string trimmedNumber = phoneNumber.trim();
+    if trimmedNumber.length() < 10 {
+        return false;
+    }
+
+    // Check if starts with optional + and contains only digits and spaces
+    boolean isValid = true;
+    int startIndex = 0;
+    if trimmedNumber.startsWith("+") {
+        startIndex = 1;
+    }
+
+    foreach int i in startIndex ..< trimmedNumber.length() {
+        string char = trimmedNumber[i];
+        if !(char >= "0" && char <= "9" || char == " ") {
+            isValid = false;
+            break;
+        }
+    }
+
+    return isValid;
 }

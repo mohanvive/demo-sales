@@ -108,9 +108,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
-modules = [
-	{org = "ballerina", packageName = "io", moduleName = "io"}
-]
 
 [[package]]
 org = "ballerina"
@@ -284,11 +281,10 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "task"
-version = "2.10.0"
+version = "2.7.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "time"},
-	{org = "ballerina", name = "uuid"}
+	{org = "ballerina", name = "time"}
 ]
 
 [[package]]
@@ -322,17 +318,6 @@ dependencies = [
 ]
 
 [[package]]
-org = "ballerina"
-name = "uuid"
-version = "1.10.0"
-dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.int"},
-	{org = "ballerina", name = "time"}
-]
-
-[[package]]
 org = "ballerinax"
 name = "mysql"
 version = "1.15.0"
@@ -353,7 +338,6 @@ name = "usecase01"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "sql"},
 	{org = "ballerina", name = "test"},
 	{org = "ballerinax", name = "mysql"}
