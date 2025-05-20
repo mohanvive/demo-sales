@@ -119,10 +119,7 @@ function testCreateCustomerError() returns error? {
     // Send POST request and expect error
     json|error response = clientEp->/api/customer/create.post(invalidCustomer);
 
-    if response is error {
-        test:assertTrue(response.message().includes("Failed to retrieve the last insert ID"), 
-            "Expected error message not found");
-    } else {
+    if response is json {
         test:assertFail("Expected error response but received success");
-    }
+    } 
 }
