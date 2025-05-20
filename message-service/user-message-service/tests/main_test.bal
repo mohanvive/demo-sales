@@ -1,5 +1,6 @@
 import ballerina/test;
 import ballerina/http;
+import ballerinax/twilio;
 
 @test:Config {}
 function testSendSms() returns error? {
@@ -18,7 +19,7 @@ function testSendSms() returns error? {
 @test:Config {}
 function testListSms() returns error? {
     http:Client testClient = check new ("http://localhost:9090/api/notification");
-    MockMessage[] response = check testClient->/sms/reply.get(fromNumber = "+0987654321");
+    twilio:Message[] response = check testClient->/sms/reply.get(fromNumber = "+0987654321");
     test:assertEquals(response.length(), 2);
 }
 
@@ -31,7 +32,6 @@ function testInvalidPhoneNumber() returns error? {
         claimId: "CL001",
         'from: "+0987654321"
     };
-
     json|error response = testClient->/sms.post(payload);
     test:assertTrue(response is error);
 }
