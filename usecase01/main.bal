@@ -31,7 +31,26 @@ service /api on new http:Listener(8085) {
         return customers;
     }
 
-    resource function post customer/create(@http:Payload CustomerInsert customer) returns json|error {
+    resource function post customer/create(@http:Payload CustomerInsert customer) returns CustomerOutput|error {
+        // Validate firstName
+        if customer.firstName.trim().length() == 0 {
+            return error("First name cannot be empty");
+        }
+
+        // Validate lastName
+        if customer.lastName.trim().length() == 0 {
+            return error("Last name cannot be empty");
+        }
+
+        // Validate email
+        if !isValidEmail(customer.email) {
+            return error("Invalid email format");
+        }
+
+        // Validate address
+        if customer.address.trim().length() == 0 {
+            return error("Address cannot be empty");
+        }
 
         sql:ExecutionResult result = check dbClient->execute(`
             INSERT INTO customers (first_name, last_name, email, address)
@@ -46,4 +65,33 @@ service /api on new http:Listener(8085) {
         }
         return error("Failed to retrieve the last insert ID");
     }
+}
+
+// Helper function to validate email format
+function isValidEmail(string email) returns boolean {
+    if email.trim().length() == 0 {
+        return false;
+    }
+
+    // Basic email format validation using string operations
+    if !email.includes("@") {
+        return false;
+    }
+
+    string[] parts = re `@`.split(email);
+    if parts.length() != 2 {
+        return false;
+    }
+
+    // Check local part and domain part are not empty
+    if parts[0].trim().length() == 0 || parts[1].trim().length() == 0 {
+        return false;
+    }
+
+    // Check domain has at least one dot
+    if !parts[1].includes(".") {
+        return false;
+    }
+
+    return true;
 }

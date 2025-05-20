@@ -21,3 +21,7 @@ type CustomerInsert record {|
     string email;
     string address;
 |};
+
+type CustomerOutput record {|
+    int customerId;
+|};
