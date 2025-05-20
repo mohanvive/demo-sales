@@ -8,11 +8,10 @@ type CustomerDB record {|
 |};
 
 type Customer record {|
-    int id;
+    int customerId;
     string firstName;
     string lastName;
     string email;
-    string phoneNumber;
     string address;
 |};
 
@@ -20,6 +19,5 @@ type CustomerInsert record {|
     string firstName;
     string lastName;
     string email;
-    string phoneNumber;
     string address;
 |};
