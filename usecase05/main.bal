@@ -1,6 +1,7 @@
 import ballerina/http;
 import ballerina/mime;
 import ballerina/time;
+import ballerina/io;
 import ballerinax/'aws.s3 as s3;
 
 // Initialize S3 client
@@ -22,7 +23,8 @@ service /api/storage on new http:Listener(8090) {
         mime:Entity filePart = bodyParts[0];
         byte[] fileContent = check filePart.getByteArray();
 
-        string fileName = "file-" + time:utcNow().toString();
+        time:Utc currentUtc = time:utcNow();
+        string fileName = "file-" + currentUtc[0].toString() + ".pdf";
 
         // Upload to S3
         check s3Client->createObject(
@@ -39,5 +41,31 @@ service /api/storage on new http:Listener(8090) {
             status: "uploaded",
             fileUrl: fileUrl
         };
+    }
+
+    resource function get download/[string fileName]() returns http:Response|error {
+        http:Response response = new;
+
+        // Get object from S3
+        stream<byte[], io:Error?> fileStream = check s3Client->getObject(
+            bucketName = bucketName,
+            objectName = fileName
+        );
+
+        // Read the byte stream
+        byte[] fileContent = [];
+        check from byte[] chunk in fileStream
+            do {
+                fileContent.push(...chunk);
+            };
+
+        // Set response headers
+        response.setHeader("Content-Type", "application/pdf");
+        // response.setHeader("Content-Type", "application/octet-stream");
+
+        response.setHeader("Content-Disposition", string `attachment; filename=${fileName}`);
+        response.setBinaryPayload(fileContent);
+
+        return response;
     }
 }
