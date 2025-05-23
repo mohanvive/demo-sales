@@ -19,8 +19,7 @@ service /api/salesforce on httpDefaultListener {
     resource function post customer/insert(CustomerDetails customerDetails) returns salesforce:CreationResponse|error {
         do {
             salesforce:CreationResponse salesforceCreationresponse = check salesforceClient->create("Contact", {
-                "Name": customerDetails.firstName,
-                "BillingCity": "New York"
+                "Name": customerDetails.firstName
             });
             return salesforceCreationresponse;
         } on fail error err {
