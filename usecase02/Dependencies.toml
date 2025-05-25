@@ -108,9 +108,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
-modules = [
-	{org = "ballerina", packageName = "io", moduleName = "io"}
-]
 
 [[package]]
 org = "ballerina"
@@ -294,11 +291,10 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "task"
-version = "2.10.0"
+version = "2.7.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "time"},
-	{org = "ballerina", name = "uuid"}
+	{org = "ballerina", name = "time"}
 ]
 
 [[package]]
@@ -329,17 +325,6 @@ name = "url"
 version = "2.6.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
-name = "uuid"
-version = "1.10.0"
-dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.int"},
-	{org = "ballerina", name = "time"}
 ]
 
 [[package]]
@@ -392,16 +377,15 @@ modules = [
 ]
 
 [[package]]
-org = "nuvindu"
+org = "wso2"
 name = "salesforce"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "test"},
 	{org = "ballerinax", name = "salesforce"}
 ]
 modules = [
-	{org = "nuvindu", packageName = "salesforce", moduleName = "salesforce"}
+	{org = "wso2", packageName = "salesforce", moduleName = "salesforce"}
 ]
 

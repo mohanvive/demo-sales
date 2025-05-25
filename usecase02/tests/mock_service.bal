@@ -1,33 +1,42 @@
 import ballerina/http;
 
-listener http:Listener httpListener = new (9097);
-
-service /api/salesforce on httpListener {
-
-    resource function get customer(string customerName, string customerId) returns json|error {
-        if customerId == "validId" {
-            return {
-                "Id": "validId",
-                "Name": "Test Account"
-            };
-        }
-        return error("Invalid customer ID");
-    }
-
-    resource function post customer/insert(@http:Payload CustomerDetails customerDetails) returns json|error {
+service /api/salesforce on new http:Listener(9099) {
+    resource function get case(string caseId) returns record {}|error {
         return {
-            "success": true,
-            "id": "createdId"
+            "Id": caseId,
+            "Subject": "Test Case",
+            "Status": "New",
+            "Priority": "High",
+            "Description": "Test Description"
         };
     }
 
-    resource function post customer/bulk(@http:Payload string content) returns json|error {
-        if content == "Name,BillingCity\nTest Account,Test City" {
-            return {
+    resource function post case/insert(@http:Payload CaseRequest caseRequest) returns record {}|error {
+        return {
+            "id": "5003h000001yZSCAA2",
+            "success": true,
+            "errors": []
+        };
+    }
+
+    resource function post cases/bulk(@http:Payload CaseRequest[] caseRequests) returns record {}|error {
+        return {
+            "id": "751xx000000005pAAA",
+            "jobId": "750xx000000005pAAA",
+            "state": "Queued",
+            "createdDate": "2023-09-21T11:20:32.000+0000",
+            "systemModstamp": "2023-09-21T11:20:32.000+0000"
+        };
+    }
+
+    resource function get case/bulk/status(string batchId, string jobId) returns json|error {
+        return [
+            {
+                "id": "5003h000001yZSCAA2",
                 "success": true,
-                "jobId": "mockJobId"
-            };
-        }
-        return error("Invalid CSV content");
+                "created": true,
+                "errors": []
+            }
+        ];
     }
 }
