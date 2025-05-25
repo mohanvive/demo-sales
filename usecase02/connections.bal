@@ -1,5 +1,5 @@
 import ballerinax/salesforce;
-import ballerinax/salesforce.bulkv2;
+import ballerinax/salesforce.bulk;
 
 final salesforce:Client salesforceClient = check new ({
     baseUrl,
@@ -11,7 +11,7 @@ final salesforce:Client salesforceClient = check new ({
     }
 });
 
-final bulkv2:Client salesforceBulkClient = check new ({
+final bulk:Client salesforceBulkClient = check new ({
     baseUrl,
     auth: {
         clientId,
