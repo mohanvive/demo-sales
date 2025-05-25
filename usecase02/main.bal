@@ -23,9 +23,9 @@ service /api/salesforce on httpDefaultListener {
         }
     }
 
-    resource function get case(string caseId) returns record {}|error {
+    resource function get case(string caseId) returns CaseResponse|error {
         do {
-            record {|anydata...;|} caseDetail = check salesforceClient->getById("Case", caseId);
+            CaseResponse caseDetail = check salesforceClient->getById("Case", caseId);
             return caseDetail;
         } on fail error err {
             return error("An error occurred", err);

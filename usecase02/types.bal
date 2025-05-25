@@ -1,18 +1,11 @@
 
-type CaseDetails record {|
-    string caseId;
-    string subject;
-    string status;
-    string priority;
-    string description;
-|};
-
-type CaseResponse record {|
-    string description;
-    string contactId;
-    string contactName;
-    string contactEmail;
-|};
+type CaseResponse record {
+    string Id;
+    string|() Subject;
+    string|() Status;
+    string|() Priority;
+    string|() Description;
+};
 
 type CaseRequest record {|
     string description;
