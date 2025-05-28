@@ -1,6 +1,7 @@
 import ballerina/http;
 import ballerina/sql;
 import ballerinax/mysql;
+import ballerina/log;
 
 final mysql:Client dbClient = check new (
     host = dbHost,
@@ -12,6 +13,7 @@ final mysql:Client dbClient = check new (
 
 service /api on new http:Listener(8085) {
     resource function get customer/details(int? id = ()) returns Customer[]|error {
+        log:printInfo("Received request to fetch customer details");
         Customer[] customers = [];
         stream<CustomerDB, error?> resultStream;
         if id is () {
@@ -28,10 +30,13 @@ service /api on new http:Listener(8085) {
                 Customer transformedCustomer = transformCustomer(customer);
                 customers.push(transformedCustomer);
             };
+        log:printInfo("Customer details fetched successfully");
         return customers;
     }
 
     resource function post customer/create(@http:Payload CustomerInsert customer) returns CustomerOutput|error {
+        log:printInfo("Received request to create a new customer");
+
         // Validate firstName
         if customer.firstName.trim().length() == 0 {
             return error("First name cannot be empty");
@@ -59,10 +64,12 @@ service /api on new http:Listener(8085) {
 
         int|string? lastInsertId = result.lastInsertId;
         if lastInsertId is int {
+            log:printInfo("Customer created successfully with ID: " + lastInsertId.toString());
             return {
                 customerId: lastInsertId
             };
         }
+        log:printError("Failed to retrieve the last insert ID");
         return error("Failed to retrieve the last insert ID");
     }
 }
