@@ -2,7 +2,7 @@ import ballerina/http;
 import ballerinax/salesforce;
 import ballerinax/salesforce.bulk;
 
-listener http:Listener httpDefaultListener = http:getDefaultListener();
+listener http:Listener httpDefaultListener = new(8082);
 
 service /api/salesforce on httpDefaultListener {
     resource function get connect() returns string|error {
